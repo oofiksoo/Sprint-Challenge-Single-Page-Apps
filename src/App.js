@@ -8,6 +8,7 @@ import WelcomePage from "./components/WelcomePage";
 
 import CharacterList from "./components/CharacterList";
 import EpisodeList from "./components/EpisodeList";
+import LocationList from "./components/LocationsList";
 
 import SearchForm from "./components/SearchForm";
 
@@ -26,9 +27,12 @@ export default function App() {
         Route exact path = "/"
         component = { WelcomePage }
         /> <
+        Route path = "/Locations"
+        component = { LocationList }
+        />{" "} <
         Route path = "/episodes"
         component = { EpisodeList }
-        /> <
+        />{" "} <
         Route path = "/characters"
         render = {
             props => ( <
@@ -38,7 +42,7 @@ export default function App() {
                 />
             )
         }
-        /> <
+        />{" "} <
         Route path = "/characters"
         render = {
             props => ( <

@@ -37,7 +37,13 @@ export default function Nav() {
         <
         button > Episodes < /button>{" "} <
         /div>{" "} <
-        /NavLink>{" "} <
+        /NavLink> <
+        NavLink to = "/locations" > { " " } <
+        div className = "btnbk" >
+        <
+        button > Locations < /button>{" "} <
+        /div>{" "} <
+        /NavLink> <
         /NavContainer>{" "} <
         /div>
     );
