@@ -1,22 +1,43 @@
 import React, { useState } from "react";
 
-export default function SearchForm({ onSearch }) {
-    // STRETCH TODO: Add stateful logic for query/form data
+export default function SearchForm(props) {
+    const [searchCriteria, setSearchCriteria] = useState({ criteria: "" });
+
+    const handleChange = event => {
+        setSearchCriteria({
+            ...searchCriteria,
+
+            [event.target.name]: event.target.value
+        });
+    };
+
+    const handleSubmit = event => {
+        event.preventDefault();
+
+        props.setNameToSearch(searchCriteria.criteria);
+
+        setSearchCriteria({ criteria: "" });
+    };
 
     return ( <
         section className = "search-form" >
         <
-        form onSubmit = {
-            () => onSearch(name) } >
+        form onSubmit = { handleSubmit } >
         <
-        input onChange = { handleInputChange }
-        placeholder = "name"
-        value = { name }
-        name = "name" /
+        label htmlFor = "criteria" > Search < /label>
+
+        <
+        input id = "criteria"
+        value = { searchCriteria.criteria }
+        onChange = { handleChange }
+        placeholder = "Search"
+        name = "criteria"
+        type = "text" /
         >
+
         <
-        button type = "submit" > Search < /button>{" "} <
-        /form>{" "} <
+        button type = "submit" > Submit < /button> <
+        /form> <
         /section>
     );
 }

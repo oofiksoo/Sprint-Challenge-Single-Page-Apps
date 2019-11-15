@@ -1,37 +1,68 @@
-import React, { useState, useEffect } from "react";
-import "./index.css";
-import axios from "axios";
+import React from "react";
 
-const CharacterCard = props => {
-    const [char, setChar] = useState();
+import styled from "styled-components";
 
-    const id = props.match.params.id;
+const Card = styled.div `
+  display: flex;
 
-    useEffect(() => {
-        axios
-            .get(`https://rickandmortyapi.com/api/character/${id}`)
+  flex-direction: column;
 
-        .then(res => {
-            setChar(res.data.results);
-        })
+  align-items: center;
 
-        .catch(err => {
-            console.log(err);
-        });
-    }, [id]);
+  padding: 10px;
 
-    if (!char) {
-        return <div > Loading characters... < /div>;
-    }
+  margin-bottom: 10px;
 
-    const { name, location } = char;
+  border: 2px solid black;
 
+  background: lightblue;
+`;
+
+const Img = styled.img `
+  max-width: 60%;
+`;
+
+const Span = styled.span `
+  font-weight: bold;
+`;
+
+export default function CharacterCard(props) {
     return ( <
-        div className = "character-card" >
+        Card >
         <
-        h3 > { name } < /h3> <p> {location} </p > { " " } <
-        /div>
-    );
-};
+        h2 > { props.name } < /h2>
 
-export default CharacterCard;
+        <
+        Img src = { props.image }
+        alt = { props.name }
+        />
+
+        <
+        div >
+        <
+        p >
+        <
+        Span > Gender: < /Span> {props.gender} <
+        /p>
+
+        <
+        p >
+        <
+        Span > Origin: < /Span> {props.origin} <
+        /p>
+
+        <
+        p >
+        <
+        Span > Species: < /Span> {props.species} <
+        /p>
+
+        <
+        p >
+        <
+        Span > Status: < /Span> {props.status} <
+        /p> <
+        /div> <
+        /Card>
+    );
+}

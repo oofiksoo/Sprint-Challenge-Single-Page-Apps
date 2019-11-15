@@ -1,78 +1,87 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 
-import { Card, Icon, Image } from "semantic-ui-react";
+import styled from "styled-components";
 
-import { Link } from "react-router-dom";
+import CharacterCard from "./CharacterCard";
 
-const CharacterList = props => {
-    // TODO: Add useState to track data from useEffect
-    const [character, setCharacter] = useState([]);
+import Axios from "axios";
+
+const Container = styled.section `
+  display: flex;
+
+  flex-wrap: wrap;
+
+  justify-content: space-between;
+`;
+
+export default function CharacterList(props) {
+    const [characters, setCharacters] = useState([]);
+
+    const [filteredCharacters, setFilteredCharacters] = useState([]);
+
+    const filterList = name => {
+        const filteredList = characters.filter(character =>
+            character.name.toLowerCase().includes(name.toLowerCase())
+        );
+
+        setFilteredCharacters(filteredList);
+    };
+
+    const getData = () => {
+        Axios.get("https://rickandmortyapi.com/api/character/")
+
+        .then(res => {
+            setCharacters(res.data.results);
+        })
+
+        .catch(err => {
+            console.log("Error", err);
+        });
+    };
 
     useEffect(() => {
-        const getCharacters = () => {
-            axios
-                .get("https://rickandmortyapi.com/api/character")
-
-            .then(res => {
-                console.log(res.data.results);
-
-                setCharacter(res.data.results);
-            })
-
-            .catch(err => {
-                console.log("Catch error", err);
-            });
-        };
-
-        getCharacters();
+        getData();
     }, []);
-    return ( <
-        div className = "cards" >
-        <
-        section className = "character-list grid-view" >
-        <
-        h2 > { " " } {
-            character.map(char => ( <
-                Link to = { `/character/${char.id}` } >
-                <
-                CharDetails key = { char.id }
-                char = { char }
-                />{" "} <
-                /Link>
-            ))
-        } { " " } <
-        /h2>{" "} <
-        /section> <
-        /div>
-    );
-};
 
-function CharDetails({ char }) {
-    const { image, name, species, status, location, origin, episode } = char;
+    useEffect(() => {
+        filterList(props.nameToSearch);
+    }, [props.nameToSearch]);
+
+    if (filteredCharacters.length > 0) {
+        return ( <
+            Container > {
+                filteredCharacters.map(character => {
+                    return ( <
+                        CharacterCard key = { character.id }
+                        gender = { character.gender }
+                        image = { character.image }
+                        name = { character.name }
+                        origin = { character.origin.name }
+                        species = { character.species }
+                        status = { character.status }
+                        />
+                    );
+                })
+            } <
+            /Container>
+        );
+    }
 
     return ( <
-        Card >
-        <
-        Image src = { image }
-        />{" "} <
-        Card.Content >
-        <
-        Card.Header > { name } < /Card.Header>{" "} <
-        Card.Meta > { `${species} ${status}` } < /Card.Meta>{" "} <
-        Card.Description > { location.name } < /Card.Description>{" "} <
-        Card.Description > { origin.name } < /Card.Description>{" "} <
-        /Card.Content>{" "} <
-        Card.Content extra >
-        <
-        a >
-        <
-        Icon name = "user" / >
-        Episodes { " " } <
-        /a>{" "} <
-        /Card.Content>{" "} <
-        /Card>
+        Container > {
+            characters.map(character => {
+                return ( <
+                    CharacterCard key = { character.id }
+                    gender = { character.gender }
+                    image = { character.image }
+                    name = { character.name }
+                    origin = { character.origin.name }
+                    species = { character.species }
+                    status = { character.status }
+                    />
+                );
+            })
+        } <
+        /Container>
     );
 }
-
-export default CharacterList;

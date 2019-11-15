@@ -2,10 +2,32 @@ import React, { useEffect, useState } from "react";
 
 import axios from "axios";
 
-import { Card, Icon, Image } from "semantic-ui-react";
-
 import { Link } from "react-router-dom";
+import styled from "styled-components";
 
+const Card = styled.div `
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  padding: 10px;
+
+  margin-bottom: 10px;
+
+  border: 2px solid black;
+
+  background: lightblue;
+`;
+
+const Img = styled.img `
+  max-width: 60%;
+`;
+
+const Span = styled.span `
+  font-weight: bold;
+`;
 const EpisodeList = props => {
     // TODO: Add useState to track data from useEffect
 
@@ -57,15 +79,7 @@ function LocationDetails({ sode }) {
     const { name, air_date, characters } = sode;
 
     return ( <
-        Card >
-        <
-        Card.Content >
-        <
-        Card.Header > { name } < /Card.Header>{" "} <
-        Card.Meta > { `${air_date}` } < /Card.Meta>{" "} <
-        Card.Description > < /Card.Description>{" "} <
-        /Card.Content>{" "} <
-        Card.Content extra > < /Card.Content>{" "} <
+        Card > { name } { `${air_date}` } { " " } <
         /Card>
     );
 }

@@ -1,39 +1,54 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { Route } from "react-router-dom";
-
-import TabNav from "./components/TabNav.js";
 
 import Header from "./components/Header.js";
 
 import WelcomePage from "./components/WelcomePage";
 
 import CharacterList from "./components/CharacterList";
-
-import LocationList from "./components/LocationsList";
-
 import EpisodeList from "./components/EpisodeList";
 
+import SearchForm from "./components/SearchForm";
+
+import Nav from "./components/Nav";
+
 export default function App() {
+    const [nameToSearch, setNameToSearch] = useState();
+
     return ( <
-        div >
+        main >
         <
         Header / >
         <
-        TabNav / >
+        Nav / >
         <
         Route exact path = "/"
         component = { WelcomePage }
         /> <
-        Route path = "/character"
-        component = { CharacterList }
-        /> <
-        Route path = "/location"
-        component = { LocationList }
-        /> <
-        Route path = "/episode"
+        Route path = "/episodes"
         component = { EpisodeList }
+        /> <
+        Route path = "/characters"
+        render = {
+            props => ( <
+                SearchForm {...props }
+                setNameToSearch = { setNameToSearch }
+                nameToSearch = { nameToSearch }
+                />
+            )
+        }
+        /> <
+        Route path = "/characters"
+        render = {
+            props => ( <
+                CharacterList {...props }
+                nameToSearch = { nameToSearch }
+                setNameToSearch = { setNameToSearch }
+                />
+            )
+        }
         />{" "} <
-        /div>
+        /main>
     );
 }
