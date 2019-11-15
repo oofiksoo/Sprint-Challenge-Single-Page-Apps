@@ -2,17 +2,17 @@ import React, { useState, useEffect } from "react";
 
 import axios from "axios";
 
-const LocationCard = props => {
-    const [loc, setLoc] = useState();
+const EpisodeCard = props => {
+    const [sode, setSode] = useState();
 
     const id = props.match.params.id;
 
     useEffect(() => {
         axios
-            .get(`https://rickandmortyapi.com/api/location/${id}`)
+            .get(`https://rickandmortyapi.com/api/episode/${id}`)
 
         .then(res => {
-            setLoc(res.data.results);
+            setSode(res.data.results);
         })
 
         .catch(err => {
@@ -20,20 +20,20 @@ const LocationCard = props => {
         });
     }, [id]);
 
-    if (!loc) {
+    if (!sode) {
         return <div > Loading characters... < /div>;
     }
 
-    const { name, type, residents } = loc;
+    const { name, air_date, characters } = sode;
 
     return ( <
         div className = "character-card" >
         <
         h3 > { name } < /h3> <
-        p > { type } < /p> <
-        h4 > { residents } < /h4>{" "} <
+        p > { air_date } < /p> <
+        h4 > { characters } < /h4>{" "} <
         /div>
     );
 };
 
-export default LocationCard;
+export default EpisodeCard;

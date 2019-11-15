@@ -1,16 +1,87 @@
 import React, { useEffect, useState } from "react";
 
-export default function CharacterList() {
-  // TODO: Add useState to track data from useEffect
+import styled from "styled-components";
 
-  useEffect(() => {
-    // TODO: Add API Request here - must run in `useEffect`
-    //  Important: verify the 2nd `useEffect` parameter: the dependancies array!
-  }, []);
+import CharacterCard from "./CharacterCard";
 
-  return (
-    <section className="character-list">
-      <h2>TODO: `array.map()` over your state here!</h2>
-    </section>
-  );
+import Axios from "axios";
+
+const Container = styled.section `
+  display: flex;
+
+  flex-wrap: wrap;
+
+  justify-content: space-between;
+`;
+
+export default function CharacterList(props) {
+    const [characters, setCharacters] = useState([]);
+
+    const [filteredCharacters, setFilteredCharacters] = useState([]);
+
+    const filterList = name => {
+        const filteredList = characters.filter(character =>
+            character.name.toLowerCase().includes(name.toLowerCase())
+        );
+
+        setFilteredCharacters(filteredList);
+    };
+
+    const getData = () => {
+        Axios.get("https://rickandmortyapi.com/api/character/")
+
+        .then(res => {
+            setCharacters(res.data.results);
+        })
+
+        .catch(err => {
+            console.log("Error", err);
+        });
+    };
+
+    useEffect(() => {
+        getData();
+    }, []);
+
+    useEffect(() => {
+        filterList(props.nameToSearch);
+    }, [props.nameToSearch]);
+
+    if (filteredCharacters.length > 0) {
+        return ( <
+            Container > {
+                filteredCharacters.map(character => {
+                    return ( <
+                        CharacterCard key = { character.id }
+                        gender = { character.gender }
+                        image = { character.image }
+                        name = { character.name }
+                        origin = { character.origin.name }
+                        species = { character.species }
+                        status = { character.status }
+                        />
+                    );
+                })
+            } <
+            /Container>
+        );
+    }
+
+    return ( <
+        Container > {
+            characters.map(character => {
+                return ( <
+                    CharacterCard key = { character.id }
+                    gender = { character.gender }
+                    image = { character.image }
+                    name = { character.name }
+                    origin = { character.origin.name }
+                    species = { character.species }
+                    status = { character.status }
+                    />
+                );
+            })
+        } <
+        /Container>
+    );
 }
