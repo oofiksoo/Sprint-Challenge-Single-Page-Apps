@@ -6,24 +6,24 @@ import { Card, Icon, Image } from "semantic-ui-react";
 
 import { Link } from "react-router-dom";
 
-const LocationList = props => {
+const EpisodeList = props => {
     // TODO: Add useState to track data from useEffect
 
-    const [location, setLocation] = useState([]);
+    const [episode, setEpisode] = useState([]);
 
     useEffect(() => {
         // TODO: Add API Request here - must run in `useEffect`
 
         //  Important: verify the 2nd `useEffect` parameter: the dependancies array!
 
-        const getLocation = () => {
+        const getEpisode = () => {
             axios
-                .get("https://rickandmortyapi.com/api/location")
+                .get("https://rickandmortyapi.com/api/episode")
 
             .then(res => {
                 console.log(res.data.results);
 
-                setLocation(res.data.results);
+                setEpisode(res.data.results);
             })
 
             .catch(err => {
@@ -31,18 +31,19 @@ const LocationList = props => {
             });
         };
 
-        getLocation();
+        getEpisode();
     }, []);
 
     return ( <
-        section className = "location-list grid-view" >
+        section className = "location-list-grid-view" >
         <
         h2 > { " " } {
-            location.map(locate => ( <
-                Link to = { `/location/${locate.id}` } >
+            episode.map(sode => ( <
+                Link key = { sode.id }
+                to = { `/episode/${sode.id}` } >
                 <
-                LocationDetails key = { locate.id }
-                locate = { locate }
+                LocationDetails key = { sode.id }
+                sode = { sode }
                 />{" "} <
                 /Link>
             ))
@@ -52,27 +53,21 @@ const LocationList = props => {
     );
 };
 
-function LocationDetails({ locate }) {
-    const { name, type, residents } = locate;
+function LocationDetails({ sode }) {
+    const { name, air_date, characters } = sode;
 
     return ( <
         Card >
         <
         Card.Content >
         <
-        Card.Header > { name } < /Card.Header> <Card.Meta> {`${type}`} </Card.Meta > { " " } <
+        Card.Header > { name } < /Card.Header>{" "} <
+        Card.Meta > { `${air_date}` } < /Card.Meta>{" "} <
         Card.Description > < /Card.Description>{" "} <
         /Card.Content>{" "} <
-        Card.Content extra >
-        <
-        a >
-        <
-        Icon name = "user" / >
-        <
-        /a>{" "} <
-        /Card.Content>{" "} <
+        Card.Content extra > < /Card.Content>{" "} <
         /Card>
     );
 }
 
-export default LocationList;
+export default EpisodeList;
